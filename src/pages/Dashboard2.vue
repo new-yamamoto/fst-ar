@@ -144,6 +144,7 @@ export default {
     VideoComponent: () => import("../components/dashboard/VideoComponent"),
     DocumentComponent: () => import("../components/dashboard/DocumentComponent"),
     RtcComponent: () => import("../components/dashboard/RtcComponent"),
+    TagViewComponent: () => import("../components/dashboard/TagViewComponent"),
   },
   computed: {
     dashboardComponents: function() {
@@ -181,7 +182,6 @@ export default {
         }
 
         var diff = vue.diff(vue.dashboardConfigs, vue.configs);
-        console.log("config watcher diff", vue.dashboardConfigs, vue.configs, diff);
         if (_.isEmpty(diff)) {
           return;
         }
@@ -214,7 +214,6 @@ export default {
   methods: {
     onContainerResize: function(size) {
       var vue = this;
-      console.log("onContainerResize", size);
       $Vue.set(vue.containerSize, "width", size.width);
       $Vue.set(vue.containerSize, "height", size.height);
     },
@@ -249,10 +248,10 @@ export default {
       });
     },
     onConponentResize: function(x, y, width, height) {
-      //console.log("onConponentResize", width, height);
+      //console.log("resize", width, height);
     },
     onConponentDrag: function (x, y) {
-      //console.log("onConponentDrag", x, y);
+      //console.log("drag", x, y);
     },
     minimizeComponent: function(item, list, isMinimized) {
       this.backupLayout();

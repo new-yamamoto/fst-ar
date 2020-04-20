@@ -17,7 +17,7 @@ export default {
   },
   mounted: function() {
     var vue = this;
-    window[vue.$options.name + (!!vue.title || vue._uid)] = vue;
+    window[vue.$options.name + (!!vue.params ? (vue.params.id || vue._uid) : vue._uid)] = vue;
 
     $(vue.$el)
       .css("width", "100%")
@@ -32,7 +32,7 @@ export default {
   methods: {
     onConponentClick: function(event) {
       var vue = this;
-      console.log(vue.$options.name + " clicked");
+      // console.log(vue.$options.name + " clicked");
       if (!!vue.onConponentClickFunc) {
         vue.onConponentClickFunc(vue.$el);
       }

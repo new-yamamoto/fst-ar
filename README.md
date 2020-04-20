@@ -24,3 +24,10 @@ quasar build
 
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+
+### git config for vscode
+$ git config --global user.name '[username]'
+$ git config --global user.email '[username@example.com['
+$ git config --global core.editor 'code --wait'
+$ git config --global merge.tool 'code --wait "$MERGED"'
+$ git config --global push.default simple

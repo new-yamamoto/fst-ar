@@ -14,23 +14,33 @@
     "@quasar/extras": "^1.0.0",
     "@shopify/draggable": "^1.0.0-beta.8",
     "axios": "^0.18.1",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "socket.io-client": "^2.3.0",
+    "vue-i18n": "^8.17.0"
   },
   "devDependencies": {
+    "@createjs/easeljs": "^2.0.0-beta.4",
+    "@createjs/tweenjs": "^2.0.0-beta.4",
     "@quasar/app": "^1.0.0",
+    "balloon-css": "^1.0.4",
     "chart.js": "^2.9.3",
+    "cropperjs": "^1.5.6",
     "deep-object-diff": "^1.1.0",
     "devtron": "^1.4.0",
-    "electron": "^7.1.5",
+    "electron": "^7.1.9",
+    "electron-builder": "^21.2.0",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-packager": "^14.2.0",
+    "fs": "0.0.1-security",
     "jquery": "^3.4.1",
-    "vue-carousel": "^0.18.0",
+    "pinch-zoom-js": "^2.3.4",
     "vue-chartjs": "^3.5.0",
     "vue-draggable-resizable": "^2.1.0",
     "vue-grid-layout": "^2.3.7",
     "vue-video-player": "^5.0.2",
-    "vuedraggable": "^2.23.2"
+    "vuedraggable": "^2.23.2",
+    "ws": "^7.2.1"
   },
   "engines": {
     "node": ">= 8.9.0",

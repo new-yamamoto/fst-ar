@@ -250,6 +250,7 @@ export default {
     GraphComponent: () => import("../components/dashboard/GraphComponent"),
     VideoComponent: () => import("../components/dashboard/VideoComponent"),
     DocumentComponent: () => import("../components/dashboard/DocumentComponent"),
+    TagViewComponent: () => import("../components/dashboard/TagViewComponent"),
   },
   computed: {
     dashboardComponents: function() {

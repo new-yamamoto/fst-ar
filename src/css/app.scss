@@ -1,4 +1,6 @@
-// app global css in SCSS form
+html, css{
+  touch-action:none;
+}
 body {
-  // overflow: hidden;
+  overflow: scroll;
 }

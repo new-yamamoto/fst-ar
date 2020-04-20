@@ -1,6 +1,8 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
+const fs = require("fs");
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -8,10 +10,14 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       'bootstrap',
+      'i18n',
       'axios',
       'lodash',
       'jquery',
       'diff',
+      'PinchZoom',
+      'Cropper',
+      'CreateJS',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -50,13 +56,15 @@ module.exports = function (ctx) {
       components: [
         'QVideo',
         'QAjaxBar',
-        'QSplitter'
+        'QSplitter',
+        'QLinearProgress',
       ],
       directives: [],
 
       // Quasar plugins
       plugins: [
         'Loading',
+        'Dialog',
       ]
     },
 
@@ -81,9 +89,16 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
-      https: false,
+      host: "fst-ar.svr",
       port: 4000,
-      open: true // opens browser window automatically
+      // public: "http://localhost:4000",
+      // https: true,
+      https: {
+        key: fs.readFileSync('./SSL_certificate/fst-ar.key'),
+        cert: fs.readFileSync('./SSL_certificate/fst-ar.crt')
+      },
+      open: true, // opens browser window automatically
+      disableHostCheck: true,
     },
     afterDev: conf => {
       console.log("afterDev", this, conf);
@@ -154,7 +169,7 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -172,7 +187,10 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'proto_by_quasar'
+        appId: 'proto_by_quasar',
+        win: {
+          target: "portable",
+        }
       },
 
       // keep in sync with /src-electron/main-process/electron-main

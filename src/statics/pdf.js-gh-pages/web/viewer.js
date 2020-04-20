@@ -1971,7 +1971,7 @@ var webViewerOpenFileViaURL;
   };
 }
 
-function webViewerPageRendered(evt) {
+  function webViewerPageRendered(evt) {
   var pageNumber = evt.pageNumber;
   var pageIndex = pageNumber - 1;
   var pageView = PDFViewerApplication.pdfViewer.getPageView(pageIndex);

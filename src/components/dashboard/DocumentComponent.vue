@@ -17,7 +17,7 @@
 </style>
 
 <script>
-import ComponentBase from "./ComponentBase.vue";
+import ComponentBase from "../ComponentBase.vue";
 
 export default {
   mixins: [ComponentBase],

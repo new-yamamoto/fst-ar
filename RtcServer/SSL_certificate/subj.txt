@@ -1,0 +1,1 @@
+subjectAltName = DNS:fst-ar.rtc, IP:192.168.1.106

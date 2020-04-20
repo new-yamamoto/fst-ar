@@ -22,7 +22,7 @@
 </style>
 
 <script>
-import ComponentBase from "./ComponentBase.vue";
+import ComponentBase from "../ComponentBase.vue";
 import LineChart from "./Charts/LineChart";
 
 export default {

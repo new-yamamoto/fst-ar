@@ -37,7 +37,7 @@
 </style>
 
 <script>
-import ComponentBase from "./ComponentBase.vue";
+import ComponentBase from "../ComponentBase.vue";
 
 import { videoPlayer } from "vue-video-player"
 import "video.js/dist/video-js.css"
