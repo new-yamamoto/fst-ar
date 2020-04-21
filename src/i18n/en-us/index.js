@@ -10,6 +10,7 @@ export default {
       value: "ja",
     },
   ],
+  EnterLabel: "Enter",
   CloseLabel: "Close",
   LoginLabel: "Login",
   LoginMessage: "Account Login",

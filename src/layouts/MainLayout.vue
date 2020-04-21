@@ -226,8 +226,8 @@
           <q-carousel
             id="mainCarousel"
             v-model="carouselSlide"
-            transition-prev="scale"
-            transition-next="scale"
+            transition-prev="slide-right"
+            transition-next="slide-left"
             swipeable
             animated
             control-color="primary"
@@ -275,8 +275,6 @@
               <div class="flex flex-left q-mb-lg">
                 <q-select
                   :label='$t("LanguageLabel")'
-                  transition-show="jump-up"
-                  transition-hide="jump-up"
                   filled
                   v-model="lang"
                   :options='$t("LanguageOptions")'
@@ -313,7 +311,7 @@
                   @click="attemptLogin"
                 />
                 <q-btn
-                  v-if="!!isLogin && !!operation && !!system"
+                  v-if="!!isLogin && progress == 1 && !!operation && !!system"
                   push
                   stack
                   no-caps
@@ -335,8 +333,6 @@
               <div class="flex flex-left q-mb-lg">
                 <q-select
                   :label='$t("OperationsLabel")'
-                  transition-show="jump-up"
-                  transition-hide="jump-up"
                   filled
                   v-model="operation"
                   :options="operations"
@@ -369,8 +365,6 @@
               <div class="flex flex-left q-mb-lg">
                 <q-select
                   :label='$t("SystemsLabel")'
-                  transition-show="jump-up"
-                  transition-hide="jump-up"
                   filled
                   v-model="system"
                   :options="systems"
@@ -380,6 +374,18 @@
                 ></q-select>
               </div>
               <div class="flex flex-center" style="width: 100%; position: absolute; left: 0px; bottom: 75px; justify-content: space-evenly;">
+                <q-btn
+                  v-if="!!operation && !!system"
+                  push
+                  stack
+                  no-caps
+                  :label='$t("EnterLabel")'
+                  icon="fas fa-door-open"
+                  color="primary"
+                  text-color="white"
+                  style="width: 120px; height: 60px;"
+                  @click="systemChanged"
+                />
                 <q-btn
                   v-if="!!isLogin && !!operation && !!system"
                   push
@@ -417,7 +423,7 @@ export default {
       isReady: false,
       isShwoRMS: false,
       mainSplitterRatio: 0,
-      subSplitterRatio: 30,
+      subSplitterRatio: 20,
 
       carouselSlide: "login",
 
@@ -478,11 +484,10 @@ export default {
         pw: null,
         isPw: true,
       },
-        progress: 0,
+      progress: 0,
 
       isLogin: false,
       showLoginDialog: true,
-
     }
   },
   computed: {
@@ -503,9 +508,14 @@ export default {
   created: function() {
   },
   mounted: function() {
-    this.isReady = true;
+    var vue = this;
+    vue.isReady = true;
 
-    window.MainLayout = this;
+    window.MainLayout = vue;
+
+    //initial value
+    vue.operation = !!vue.operations.length ? vue.operations[0].value : null;
+    vue.system = !!vue.systems.length ? vue.systems[0].value : null;
   },
   methods: {
     attemptLogin: function() {
@@ -521,7 +531,7 @@ export default {
           setTimeout(() => vue.carouselSlide = "operations", 500);
         }
 
-        var d = _.random(0.1, 0.3, true);
+        var d = _.random(0.1, 0.2, true);
         if (vue.progress + d > 1) {
           vue.progress = 1;
         } else {

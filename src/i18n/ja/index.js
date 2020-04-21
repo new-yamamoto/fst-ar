@@ -10,6 +10,7 @@ export default {
       value: "en-us",
     },
   ],
+  EnterLabel: "決定",
   CloseLabel: "閉じる",
   LoginLabel: "ログイン",
   LoginMessage: "アカウントログイン",

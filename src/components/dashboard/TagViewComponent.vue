@@ -57,21 +57,18 @@
           </q-list>
         </q-btn-dropdown>
       </div>
-      <div class="canvas-wrapper" style="height: 100%;">
-        <q-resize-observer @resize="onImageResize" ></q-resize-observer>
+      <div class="canvas-wrapper" style="height: 100%; position: relative; overflow: hidden;">
         <canvas id="MainCanvas"></canvas>
-      </div>
-      <!-- タグエレメントはデータから動的に配置 -->
-      <div id="tags">
-        <div v-for="tag in tagLayouts" v-bind:key=tag.id
-          :aria-label=tag.name
+        <div v-for="tag in TagLayouts" v-bind:key=tag.id
+          :aria-label='!!i18n.locale ? tag["name_" + i18n.locale] : tag.name'
           :data-balloon-pos=tag.balloon
           data-balloon-visible
           :class='"TagMarker" + tag.style'
-          style="position: absolute;"
           :style=tag.layoutStyle
           @click="ev => showTagDetail(ev, tag)"
         ></div>
+      </div>
+      <div class="TagInfo" :style=TagInfoStyle>
       </div>
     </div>
   </div>
@@ -94,13 +91,11 @@ export default {
       Is3D: false,
       MainSource: null,
 
-      ZoomRatio: 0,
-      OffsetX: 0,
-      OffsetY: 0,
-
-      tags: [
+      Tags: [
         {
           name: "タグ001",
+          name_ja: "タグ001",
+          "name_en-us": "TAG001",
           id: "tag_001",
           style: "Circle",
           balloon: "left",
@@ -109,12 +104,14 @@ export default {
             height: 90,
           },
           pos: {
-            top: 320,
-            left: 355,
+            top: 255,
+            left: 365,
           },
         },
         {
           name: "タグ002",
+          name_ja: "タグ002",
+          "name_en-us": "TAG002",
           id: "tag_002",
           style: "Circle",
           balloon: "up",
@@ -125,12 +122,14 @@ export default {
             height: 60,
           },
           pos: {
-            top: 255,
+            top: 195,
             left: 440,
           },
         },
         {
           name: "タグ003",
+          name_ja: "タグ003",
+          "name_en-us": "TAG003",
           id: "tag_003",
           style: "Rectangle",
           balloon: "right",
@@ -139,12 +138,14 @@ export default {
             height: 60,
           },
           pos: {
-            top: 290,
+            top: 220,
             left: 600,
           },
         },
         {
           name: "タグ004",
+          name_ja: "タグ004",
+          "name_en-us": "TAG004",
           id: "tag_004",
           style: "Rectangle",
           balloon: "down",
@@ -153,13 +154,20 @@ export default {
             height: 50,
           },
           pos: {
-            top: 500,
+            top: 450,
             left: 350,
           },
         },
       ],
-      cropperOptions: {
-        viewMode: 1,
+      TagInfoStyle: null,
+
+      Image: null,
+      Canvas: null,
+      Context: null,
+
+      cr: null,
+      CropperOptions: {
+        viewMode: 0,
         dragMode: "move",
         toggleDragModeOnDblclick: false,
         guide: false,
@@ -168,23 +176,25 @@ export default {
         autoCrop: false,
       },
 
-      Canvas: null,
-      Context: null,
+      ZoomRatio: 0,
+      OffsetX: 0,
+      OffsetY: 0,
     }
   },
   props: {
   },
   computed: {
-    tagLayouts: function() {
+    TagLayouts: function() {
       var vue = this;
-      // console.log("tagLayouts computed")
 
-      var layouts = vue.tags.map(v => {
+      var layouts = vue.Tags.map(v => {
         v.actualWidth = v.size.width * vue.ZoomRatio;
         v.actualHeight = v.size.height * vue.ZoomRatio;
-        v.actualTop = v.pos.top * vue.ZoomRatio + v.size.height * (1 - vue.ZoomRatio) + vue.OffsetY;
+        v.actualTop = v.pos.top * vue.ZoomRatio + vue.OffsetY;
         v.actualLeft = v.pos.left * vue.ZoomRatio + vue.OffsetX;
+
         v.layoutStyle = `
+          position: absolute;
           width: ${v.actualWidth}px;
           height: ${v.actualHeight}px;
           top: ${v.actualTop}px;
@@ -198,7 +208,14 @@ export default {
     },
   },
   created: function() {
+    var vue = this;
     // console.log("tv created");
+    // var img = new Image();
+    // img.onload = () => {
+    //   $(vue.$el).css("height", (img.height - 32) + "px");
+    //   console.log("created", $(vue.$el).css("height"));
+    // };
+    // img.src = vue.MainSource;
   },
   mounted: function() {
     // console.log("tv mounted");
@@ -214,9 +231,16 @@ export default {
     img.onload = () => {
       //load canvas image
       vue.Image = img;
-      vue.Canvas.width = $("#MainCanvas").parent().width();
-      vue.Canvas.height = $("#MainCanvas").parent().height();
-      vue.ZoomRatio = _.min([vue.Canvas.width / vue.Image.width, vue.Canvas.height / vue.Image.height]);
+      var parent = $("#MainCanvas").parent();
+
+      vue.ZoomRatio = _.min([parent.width() / vue.Image.width, parent.height() / vue.Image.height]);
+
+      var h = vue.Image.height * vue.ZoomRatio;
+
+      $(vue.$el).parent().css("height", (h + 64) + "px");
+
+      vue.Canvas.width = parent.width();
+      vue.Canvas.height = h;
 
       vue.Context.drawImage(
         img,
@@ -229,6 +253,10 @@ export default {
       //set Cropper
       var cr;
       vue.Canvas.addEventListener("ready", event => {
+        console.log("cr ready");
+        cr.moveTo(0);
+        vue.locateTag(cr.getCanvasData());
+
         //set cropper tapped and double tapped events
         cr.container.addEventListener("touchstart", ev => {
           var el = $(ev.target);
@@ -255,14 +283,11 @@ export default {
         // console.log("cr zoom", event.detail.ratio);
       });
       vue.Canvas.addEventListener("crop", event => {
-        var canvas = cr.getCanvasData();
-        vue.ZoomRatio = canvas.width / vue.Image.width;
-        vue.OffsetX = canvas.left;
-        vue.OffsetY = canvas.top;
-        // console.log("cr crop", vue.ZoomRatio, vue.OffsetX, vue.OffsetY);
+        vue.locateTag(cr.getCanvasData());
       });
 
-      cr = new window.Cropper(vue.Canvas, vue.cropperOptions);
+      cr = new window.Cropper(vue.Canvas, vue.CropperOptions);
+      vue.cr = cr;
       window.cr = cr;
     };
     img.src = vue.MainSource;
@@ -274,8 +299,13 @@ export default {
     showTagDetail: function(ev, tag) {
       console.log("select tag:" + tag.id, tag);
     },
-    onImageResize: function() {
+    locateTag: function(canvas) {
       var vue = this;
+      var canvas = cr.getCanvasData();
+
+      vue.ZoomRatio = canvas.width / vue.Image.width;
+      vue.OffsetX = canvas.left;
+      vue.OffsetY = canvas.top;
     },
   }
 };
@@ -304,6 +334,15 @@ export default {
 	background-color: rgba(255,255,255,0.25);
   border: solid 1px black;
   border-radius: 50%;
+}
+.TagInfo {
+  background-color: white;
+  border: solid 3px #027BE3;
+  position: absolute;
+  width: 200px;
+  height: 300px;
+  bottom: 0px;
+  right: 0px;
 }
 .cropper-drag-box.cropper-modal {
   background-color: transparent;
