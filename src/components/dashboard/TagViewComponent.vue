@@ -348,6 +348,12 @@ export default {
   background-color: transparent;
   opacity: unset;
 }
+.video {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border: 0px solid black;
+  margin: 5px;
+}
 </style>
 <style>
 :root{
