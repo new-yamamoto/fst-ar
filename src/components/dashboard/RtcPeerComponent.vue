@@ -117,7 +117,7 @@ import ComponentBase from "../ComponentBase.vue";
 
 export default {
   mixins: [ComponentBase],
-  name: "RtcComponent",
+  name: "RtcPeerComponent",
   title: "コミュニケーションコンポーネント",
   data () {
     return {

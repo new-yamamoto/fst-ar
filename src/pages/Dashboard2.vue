@@ -144,6 +144,7 @@ export default {
     VideoComponent: () => import("../components/dashboard/VideoComponent"),
     DocumentComponent: () => import("../components/dashboard/DocumentComponent"),
     RtcComponent: () => import("../components/dashboard/RtcComponent"),
+    RtcPeerComponent: () => import("../components/dashboard/RtcPeerComponent"),
     TagViewComponent: () => import("../components/dashboard/TagViewComponent"),
   },
   computed: {

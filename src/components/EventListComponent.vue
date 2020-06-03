@@ -115,6 +115,16 @@ export default {
           icon: "assignment_turned_in",
         },
         {
+          eventId: "Rtcサンプル",
+          label: "Rtcサンプル",
+          icon: "assignment_turned_in",
+        },
+        {
+          eventId: "Rtcサンプル(Peer)",
+          label: "Rtcサンプル(Peer)",
+          icon: "assignment_turned_in",
+        },
+        {
           eventId: "EVENT_01",
           label: "EVENT_01",
           icon: "assignment_turned_in",
@@ -141,18 +151,6 @@ export default {
           label: "EVENT_02",
           icon: "assignment_turned_in",
         },
-        {
-          eventId: "EVENT_03",
-          label: "EVENT_03",
-          icon: "assignment_turned_in",
-          children: [
-            {
-              eventId: "EVENT_03_01",
-              label: "SUBEVENT_01",
-              icon: "assignment_turned_in",
-            },
-          ]
-        }
       ],
     }
   },
@@ -276,6 +274,26 @@ export default {
             },
           },
         ],
+        "Rtcサンプル": [
+          {
+            "x": 0, "y": 0, "z": 0, "w": 1, "h": 1, "i": 0,
+            "info": {
+              "comp": "RtcComponent",
+              "title": "コミュニケーションサンプル",
+              "asSample": true,
+            },
+          },
+        ],
+        "Rtcサンプル(Peer)": [
+          {
+            "x": 0, "y": 0, "z": 0, "w": 1, "h": 1, "i": 0,
+            "info": {
+              "comp": "RtcPeerComponent",
+              "title": "コミュニケーションサンプル(Peer)",
+              "asSample": true,
+            },
+          },
+        ],
         "EVENT_01": configs,
         "EVENT_01_01": [configs[0]],
         "EVENT_01_02": [configs[1]],
@@ -286,26 +304,6 @@ export default {
             "info": {
               "comp": "GraphComponent",
               "title": "グラフサンプル",
-              "asSample": true,
-            },
-          },
-        ],
-        "EVENT_03": [
-          {
-            "x": 0, "y": 0, "z": 0, "w": 1, "h": 1, "i": 0,
-            "info": {
-              "comp": "RtcComponent",
-              "title": "コミュニケーションサンプル",
-              "asSample": true,
-            },
-          },
-        ],
-        "EVENT_03_01": [
-          {
-            "x": 0, "y": 0, "z": 0, "w": 1, "h": 1, "i": 0,
-            "info": {
-              "comp": "DocumentComponent",
-              "title": "ドキュメントサンプル",
               "asSample": true,
             },
           },
